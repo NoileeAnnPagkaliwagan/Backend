@@ -1,12 +1,26 @@
 import express from "express";
 import 'dotenv/config.js';
-import studentRoutes from "./routes/StudentRoutes.js"
+import BookRoutes from "./routes/BookRoutes.js"
+import studentRoutes from "./routes/StudentRoutes.js" 
+import cors from "cors";
 
 //create express app
 const app = express();
 
+//ENABLE CORS TO FRONTEND
+let corsOptions = {
+    origin: process.env.ORIGIN
+}
+
 //middleware
 app.use(express.json());
+app.use(cors(corsOptions));
+
+
+app.use((req, res, next) =>{
+    console.log(req.path, req.method);
+    next();
+})
 
 const port = 3000;
 
@@ -18,4 +32,5 @@ try{
     console.log(e);
 }
 
+app.use('/book',BookRoutes);
 app.use('/student',studentRoutes);
