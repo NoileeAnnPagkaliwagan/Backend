@@ -3,6 +3,7 @@ import 'dotenv/config.js';
 import BookRoutes from "./routes/BookRoutes.js"
 import studentRoutes from "./routes/StudentRoutes.js" 
 import cors from "cors";
+import UserRoutes from "./routes/UserRoutes.js";
 
 //create express app
 const app = express();
@@ -14,6 +15,7 @@ let corsOptions = {
 
 //middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 
 
@@ -34,3 +36,4 @@ try{
 
 app.use('/book',BookRoutes);
 app.use('/student',studentRoutes);
+app.use('/user', UserRoutes);
