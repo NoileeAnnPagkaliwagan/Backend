@@ -1,6 +1,6 @@
 import * as BookController from '../controller/BookController.js';
 import express from "express";
-import authHandler from '../models/middleware/authHandler.js';
+import authHandler from '../middleware/authHandler.js';
 
 const bookRoutes = express.Router();
 

@@ -1,41 +1,39 @@
-import * as UserModel from "../models/UserModel.js";
+import * as UserModel from '../models/UserModel.js';
 
-export const register = async (req, res) =>{
-    const {name, email, password} = req.body;
 
-    try{
-        const user = await UserModel.createUser(name, email, password);
-        res.status(201).json({
-            success: true, 
-            message: [
-                {result: "A new account has been created!"}
-            ]
-    
-        });
-    }catch(e){
-        console.log(e);
-        res.status(500).json({
-            success: false,
-            message: "Internal Server Error"
-        })
-
-    }
-
-   
-};
-
- export const login = async (req, res) => {
-    const { email, password}= req.body;
+export const register = async (req, res) => {
+    const {name, email, password}= req.body;
 
     try{
-        const token = await UserModel.login( email, password);
+        const users = await UserModel.createUser(name, email, password);
         res.status(200).json({success: true, message: users});
     }catch(e){
         console.log(e);
         res.status(500).json({
-            success: true,
-            message: [{result : "Login successful!", token}]
+            success: false,
+            message: [{result : "A new account has been created!"}]
         });
     }
     
-   }
+}
+
+export const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const token = await UserModel.login(email, password);
+        res.status(200).json({
+            success: true,
+            message: [
+                {result: "Login successful",token},
+            ]
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+        });
+    }
+};

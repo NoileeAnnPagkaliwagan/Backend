@@ -24,9 +24,9 @@ export const createUser = async (name, email, password)=>{
         throw error;
     }
 
-    const [tbluser] = await pool.query("SELECT email FROM tbluser WHERE email = ?",[email]);
+    const [user] = await pool.query("SELECT email FROM tbluser WHERE email = ?",[email]);
 
-    if(tbluser.length === 1){
+    if(user.length === 1){
         const error = new Error(`The email ${email} is already used.`)
         error.statusCode = 400;
         throw error;
@@ -48,9 +48,9 @@ export const login = async (email, password) =>{
         error.statusCode = 400
         throw error;
     }
-    const [tbluser] = await pool.query(
+    const [user] = await pool.query(
         "SELECT * FROM tbluser WHERE email = ?", [email])
-    if(tbluser.length === 0){
+    if(user.length === 0){
         const error = new Error(
             `An account with the email: ${email} does not exist.`)
         error.statusCode = 400;
@@ -67,9 +67,10 @@ export const login = async (email, password) =>{
     const token = jwt.sign({id: user[0].id}, process.env.SECRET,{expiresIn: '1d'});
 
     return token;
-
+    
 }
-    export const getUser = async (id) =>{
+ 
+export const getUser = async (id) =>{
     if (parseInt(id) === NaN){
         throw new Error('Invalid id');
     }
